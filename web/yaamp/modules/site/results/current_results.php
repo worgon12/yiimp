@@ -191,6 +191,7 @@ foreach ($algos as $item)
             
 			$pool_hash_sfx = $pool_hash ? Itoa2($pool_hash) . 'h/s' : '';
             $min_ttf = $coin->network_ttf > 0 ? min($coin->actual_ttf, $coin->network_ttf) : $coin->actual_ttf;
+
             $network_hash = controller()
                 ->memcache
                 ->get("yiimp-nethashrate-{$coin->symbol}");
@@ -212,6 +213,10 @@ foreach ($algos as $item)
                         ->memcache
                         ->set("yiimp-nethashrate-{$coin->symbol}", $network_hash, 60);
                 }
+				else
+				{
+					$network_hash = $coin->difficulty * 0x100000000 / ($min_ttf? $min_ttf: 60);
+				}
             }
             $network_hash = $network_hash ? Itoa2($network_hash) . 'h/s' : '';
             echo "<td align='center' style='font-size: .8em;' data='$pool_hash'>$network_hash</td>";
