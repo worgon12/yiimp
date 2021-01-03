@@ -168,6 +168,7 @@ YAAMP_ALGO g_algos[] =
 	{"penta", penta_hash, 1, 0, 0},
 	{"phi", phi_hash, 1, 0, 0},
 	{"phi2", phi2_hash, 0x100, 0, 0},
+	{"phi5", phi5_hash, 1, 0, 0}, /* Combode [CBE] */
 	{"pipe", pipe_hash, 1,0,0},
 	{"polytimos", polytimos_hash, 1, 0, 0},
 	{"quark", quark_hash, 1, 0, 0},
