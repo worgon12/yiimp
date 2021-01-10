@@ -131,6 +131,7 @@ YAAMP_ALGO g_algos[] =
 	{"bmw", bmw_hash, 1, 0, 0},
 	{"bmw512", bmw512_hash, 0x100, 0, 0},
 	{"c11", c11_hash, 1, 0, 0},
+	{"cpupower", cpupower_hash, 0x10000, 0, 0}, //CPUchain
 	{"decred", decred_hash, 1, 0 },
 	{"curvehash", curve_hash, 1, 0 }, // CurveHash
 	{"dedal", dedal_hash, 0x100, 0, 0},
@@ -222,6 +223,7 @@ YAAMP_ALGO g_algos[] =
 	{"yespowerR16", yespowerR16_hash, 0x10000, 0, 0 },
 	{"yespowerRES", yespowerRES_hash, 0x10000, 0, 0 }, //Resistanse[RES] 
 	{"yespowerSUGAR", yespowerSUGAR_hash, 0x10000, 0, 0 }, //Sugarchain[SUGAR] 
+	{"yespowerTIDE", yespowerTIDE_hash, 0x10000, 0, 0 }, //Tidecoin[TDC] 
 	{"yespowerURX", yespowerURX_hash, 0x10000, 0, 0 }, //UraniumX[URX] 
 	{"whirlcoin", whirlpool_hash, 1, 0, sha256_hash_hex }, /* old sha merkleroot */
 	{"whirlpool", whirlpool_hash, 1, 0 }, /* sha256d merkleroot */

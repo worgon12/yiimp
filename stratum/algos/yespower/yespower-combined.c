@@ -1251,3 +1251,28 @@ void yespowerLITB_hash(const char* input, char* output, uint32_t len)
     yespower_tls( input, len, &yespower_1_0_litb, (yespower_binary_t *)output);
 }
 
+void yespowerTIDE_hash(const char* input, char* output, uint32_t len)
+{
+    yespower_params_t yespower_1_0_tide = 
+	{
+		.version = YESPOWER_1_0,
+		.N = 2048,
+		.r = 32,
+		.pers = NULL,
+		.perslen = 0 
+    };
+    yespower_tls( input, len, &yespower_1_0_tide, (yespower_binary_t *)output);
+}
+
+void cpupower_hash(const char* input, char* output, uint32_t len)
+{
+    yespower_params_t yespower_1_0_cpupower = 
+	{
+		.version = YESPOWER_1_0,
+		.N = 2048,
+		.r = 32,
+		.pers = "CPUpower: The number of CPU working or available for proof-of-work mining",
+		.perslen = 73 
+    };
+    yespower_tls( input, len, &yespower_1_0_cpupower, (yespower_binary_t *)output);
+}
