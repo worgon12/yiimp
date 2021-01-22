@@ -243,3 +243,4 @@ void sha256_double_hash_hex(const char *input, char *output, unsigned int len);
 #include "algos/megamec.h"
 #include "algos/x11kvs.h"
 #include "algos/phi5.h"
+#include "algos/lyra2z330.h"
