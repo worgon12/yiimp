@@ -283,7 +283,7 @@ YAAMP_JOB_TEMPLATE *coind_create_template(YAAMP_COIND *coind)
 		json_value_free(json);
 		return NULL;
 	}
-
+	
 	json_value *json_coinbaseaux = json_get_object(json_result, "coinbaseaux");
 	if(!json_coinbaseaux && coind->isaux)
 	{
@@ -305,7 +305,20 @@ YAAMP_JOB_TEMPLATE *coind_create_template(YAAMP_COIND *coind)
 	strcpy(templ->nbits, bits ? bits : "");
 	const char *prev = json_get_string(json_result, "previousblockhash");
 	strcpy(templ->prevhash_hex, prev ? prev : "");
-	const char *flags = json_get_string(json_coinbaseaux, "flags");
+	 
+	 // yespowerRES
+    if (!strcmp(g_stratum_algo, "yespowerRES")) {
+        const char *finalsaplingroothash = json_get_string(json_result, "finalsaplingroothash");
+        strcpy(templ->extradata_hex, finalsaplingroothash ? finalsaplingroothash : "");
+        string_be(templ->extradata_hex,templ->extradata_be);
+    }
+	
+	const char *flags;
+	if(!json_coinbaseaux && coind->isaux)
+		flags = json_get_string(json_coinbaseaux, "flags");
+		else
+		flags = NULL;
+	
 	strcpy(templ->flags, flags ? flags : "");
 
 	// LBC Claim Tree (with wallet gbt patch)
@@ -348,6 +361,8 @@ YAAMP_JOB_TEMPLATE *coind_create_template(YAAMP_COIND *coind)
 	if (strcmp(coind->rpcencoding, "DCR") == 0) {
 		decred_fix_template(coind, templ, json_result);
 	}
+
+	
 
 	if (!templ->height || !templ->nbits || !strlen(templ->prevhash_hex)) {
 		stratumlog("%s warning, gbt incorrect : version=%s height=%d value=%d bits=%s time=%s prev=%s\n",
@@ -431,7 +446,7 @@ YAAMP_JOB_TEMPLATE *coind_create_template(YAAMP_COIND *coind)
 			templ->has_filtered_txs = true;
 		}
 	}
-
+	
 	if (templ->has_filtered_txs) {
 		// coinbasevalue is a total with all tx fees, need to reduce it if some are skipped
 		templ->value -= templ->filtered_txs_fee;
@@ -530,18 +545,10 @@ bool coind_create_job(YAAMP_COIND *coind, bool force)
 
 	YAAMP_JOB *job_last = coind->job;
 
-	if(	!force && job_last && job_last->templ && job_last->templ->created + 45 > time(NULL) &&
-		templ->height == job_last->templ->height &&
-		templ->txcount == job_last->templ->txcount &&
-		strcmp(templ->coinb2, job_last->templ->coinb2) == 0)
+	//! one job per height, no exceptions
+	if (job_last && templ && templ->height == job_last->templ->height) 
 	{
-//		debuglog("coind_create_job %s %d same template %x \n", coind->name, coind->height, coind->job->id);
-		if (templ->txcount) {
-			templ->txsteps.clear();
-			templ->txdata.clear();
-		}
 		delete templ;
-
 		CommonUnlock(&coind->mutex);
 		return true;
 	}
