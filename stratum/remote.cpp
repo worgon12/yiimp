@@ -107,6 +107,7 @@ void *remote_thread(void *p)
 	YAAMP_REMOTE *remote = (YAAMP_REMOTE *)p;
 
 	const char message_subscribe[] = "{\"id\":1,\"method\":\"mining.subscribe\",\"params\":[\"stratum-proxy/0.0.2\"]}\n";
+	const char message_configure[] = "{\"id\":4,\"method\":\"mining.configure\",\"params\":[]}\n";
 	const char message_extranonce[] = "{\"id\":3,\"method\":\"mining.extranonce.subscribe\",\"params\":[]}\n";
 
 	remote_connect(remote);

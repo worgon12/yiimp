@@ -44,6 +44,7 @@ struct YAAMP_JOB_TEMPLATE
 	vector<string> txdata;
 
 	char version[32];
+	char versionmask[32];
 	char nbits[32];
 	char ntime[32];
 
@@ -63,8 +64,11 @@ struct YAAMP_JOB_TEMPLATE
 	bool has_filtered_txs;
 	int filtered_txs_fee;
 
+
 	int auxs_size;
 	YAAMP_COIND_AUX *auxs[MAX_AUXS];
+	
+	vector<string> BackWhither;
 };
 
 #define YAAMP_JOB_MAXSUBIDS		200

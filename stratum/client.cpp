@@ -604,6 +604,9 @@ void *client_thread(void *p)
 		if(!strcmp(method, "mining.subscribe"))
 			b = client_subscribe(client, json_params);
 
+		else if(!strcmp(method, "mining.configure"))
+			b = client_send_result(client, "");
+		
 		else if(!strcmp(method, "mining.authorize"))
 			b = client_authorize(client, json_params);
 
@@ -686,4 +689,3 @@ void *client_thread(void *p)
 
 	pthread_exit(NULL);
 }
-

@@ -132,8 +132,8 @@ YAAMP_ALGO g_algos[] =
 	{"bmw512", bmw512_hash, 0x100, 0, 0},
 	{"c11", c11_hash, 1, 0, 0},
 	{"cpupower", cpupower_hash, 0x10000, 0, 0}, //CPUchain
+	{"curvehash", curve_hash, 1, 0, 0},
 	{"decred", decred_hash, 1, 0 },
-	{"curvehash", curve_hash, 1, 0 }, // CurveHash
 	{"dedal", dedal_hash, 0x100, 0, 0},
 	{"deep", deep_hash, 1, 0, 0},
 	{"dmd-gr", groestl_hash, 0x100, 0, 0}, /* diamond (double groestl) */
@@ -169,7 +169,7 @@ YAAMP_ALGO g_algos[] =
 	{"penta", penta_hash, 1, 0, 0},
 	{"phi", phi_hash, 1, 0, 0},
 	{"phi2", phi2_hash, 0x100, 0, 0},
-	{"phi5", phi5_hash, 1, 0, 0}, /* Combode [CBE] */
+	{"phi5", phi5_hash, 1, 0, 0},
 	{"pipe", pipe_hash, 1,0,0},
 	{"polytimos", polytimos_hash, 1, 0, 0},
 	{"quark", quark_hash, 1, 0, 0},
@@ -179,6 +179,7 @@ YAAMP_ALGO g_algos[] =
 	{"scrypt", scrypt_hash, 0x10000, 0, 0},
 	{"scryptn", scryptn_hash, 0x10000, 0, 0},
 	{"sha256", sha256_double_hash, 1, 0, 0},
+	{"sha256csm", sha256csm_hash, 1, 0, 0},
 	{"sha256t", sha256t_hash, 1, 0, 0}, // sha256 3x
 	{"sib", sib_hash, 1, 0, 0},
 	{"skein", skein_hash, 1, 0, 0},
@@ -194,7 +195,7 @@ YAAMP_ALGO g_algos[] =
 	{"x11", x11_hash, 1, 0, 0},
 	{"x11evo", x11evo_hash, 1, 0, 0},
 	{"x11k", x11k_hash, 1, 0, 0},
-	{"x11kvs", x11kvs_hash, 0x100, 0, 0, 7},
+	{"x11kvs", x11kvs_hash, 0x100, 0, 0,7},
 	{"x12", x12_hash, 1, 0, 0},
 	{"x13", x13_hash, 1, 0, 0},
 	{"x14", x14_hash, 1, 0, 0},
@@ -208,6 +209,7 @@ YAAMP_ALGO g_algos[] =
 	{"x18", x18_hash, 1, 0, 0},
 	{"x20r", x20r_hash, 0x100, 0, 0},
 	{"x21s", x21s_hash, 0x100, 0, 0},
+	{"x22", x22_hash, 1, 0, 0},
 	{"x22i", x22i_hash, 1, 0, 0},
 	{"x25x", x25x_hash, 1, 0, 0},
 	{"xevan", xevan_hash, 0x100, 0, 0},
@@ -219,7 +221,7 @@ YAAMP_ALGO g_algos[] =
 	{"yespowerIC", yespowerIC_hash, 0x10000, 0, 0 }, //IsotopeC[IC]
 	{"yespowerIOTS", yespowerIOTS_hash, 0x10000, 0, 0 }, //Iots [IOTS]
 	{"yespowerLITB", yespowerLITB_hash, 0x10000, 0, 0 }, //LightBit[LITB]
-	{"yespowerLTNCG", yespowerLTNCG_hash, 0x10000, 0, 0 }, //LightningCash Gold[LNC]
+	{"yespowerLTNCG", yespowerLTNCG_hash, 0x10000, 0, 0 }, //LightningCash Gold[LTNCG]
 	{"yespowerR16", yespowerR16_hash, 0x10000, 0, 0 },
 	{"yespowerRES", yespowerRES_hash, 0x10000, 0, 0 }, //Resistanse[RES] 
 	{"yespowerSUGAR", yespowerSUGAR_hash, 0x10000, 0, 0 }, //Sugarchain[SUGAR] 

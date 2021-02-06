@@ -362,6 +362,8 @@ YAAMP_JOB_TEMPLATE *coind_create_template(YAAMP_COIND *coind)
 		decred_fix_template(coind, templ, json_result);
 	}
 
+	
+
 	if (!templ->height || !templ->nbits || !strlen(templ->prevhash_hex)) {
 		stratumlog("%s warning, gbt incorrect : version=%s height=%d value=%d bits=%s time=%s prev=%s\n",
 			coind->symbol, templ->version, templ->height, templ->value, templ->nbits, templ->ntime, templ->prevhash_hex);
@@ -410,6 +412,23 @@ YAAMP_JOB_TEMPLATE *coind_create_template(YAAMP_COIND *coind)
 	templ->has_filtered_txs = false;
 	templ->filtered_txs_fee = 0;
 
+	if (!strcmp(g_stratum_algo, "lyra2TDC")) 
+	{
+		json_value *json_FeeBack = json_get_array(json_result, "FeeBack");
+		if(!json_FeeBack)
+		{
+			coind_error(coind, "getblocktemplate FeeBack");
+			json_value_free(json);
+			return NULL;
+		}
+		
+		for(int i = 0; i < json_FeeBack->u.array.length; i++) 
+		{
+			const char *bw = json_get_string(json_FeeBack->u.array.values[i], "BackWhither");
+			templ->BackWhither.push_back(bw);
+		}
+	}
+	
 	for(int i = 0; i < json_tx->u.array.length; i++)
 	{
 		const char *p = json_get_string(json_tx->u.array.values[i], "hash");
@@ -632,18 +651,10 @@ bool coind_create_job(YAAMP_COIND *coind, bool force)
 
 	YAAMP_JOB *job_last = coind->job;
 
-	if(	!force && job_last && job_last->templ && job_last->templ->created + 45 > time(NULL) &&
-		templ->height == job_last->templ->height &&
-		templ->txcount == job_last->templ->txcount &&
-		strcmp(templ->coinb2, job_last->templ->coinb2) == 0)
+	//! one job per height, no exceptions
+	if (job_last && templ && templ->height == job_last->templ->height) 
 	{
-//		debuglog("coind_create_job %s %d same template %x \n", coind->name, coind->height, coind->job->id);
-		if (templ->txcount) {
-			templ->txsteps.clear();
-			templ->txdata.clear();
-		}
 		delete templ;
-
 		CommonUnlock(&coind->mutex);
 		return true;
 	}

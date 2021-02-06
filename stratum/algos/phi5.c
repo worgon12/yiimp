@@ -16,13 +16,13 @@
 
 void phi5_hash(const char* input, char* output, uint32_t len)
 {
-    sph_skein512_context     ctx_skein;
-    sph_jh512_context        ctx_jh;
-    sph_cubehash512_context  ctx_cubehash;
-    sph_fugue512_context     ctx_fugue;
-    sph_keccak512_context    ctx_keccak;
-    sph_gost512_context      ctx_gost;
-    sph_echo512_context      ctx_echo;
+    	sph_skein512_context     ctx_skein;
+    	sph_jh512_context        ctx_jh;
+    	sph_cubehash512_context  ctx_cubehash;
+    	sph_fugue512_context     ctx_fugue;
+    	sph_keccak512_context    ctx_keccak;
+    	sph_gost512_context      ctx_gost;
+    	sph_echo512_context      ctx_echo;
 	sph_bmw512_context       ctx_bmw;
 
 	uint8_t _ALIGN(128) hash[64];

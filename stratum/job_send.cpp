@@ -29,7 +29,7 @@ static void job_mining_notify_buffer(YAAMP_JOB *job, char *buffer)
 			job->id, templ->prevhash_be, templ->extradata_be, templ->coinb1, templ->coinb2,
 			templ->txmerkles, templ->version, templ->nbits, templ->ntime);
 		return;
-	}
+	} 
 	
     // yespowerRES job
 
@@ -183,7 +183,7 @@ void job_broadcast(YAAMP_JOB *job)
 	if (templ->nbits && !coin_target) coin_target = 0xFFFF000000000000ULL; // under decode_compact min diff
 	double coin_diff = target_to_diff(coin_target);
 
-	debuglog("%s %d - diff %.9f job %x to %d/%d/%d clients, hash %.3f/%.3f in %.1f ms\n", job->name,
+	debuglog("%s %d - diff %.9f job %x to %d/%d/%d clients, hash %.6f/%.6f in %.1f ms\n", job->name,
 		templ->height, coin_diff, job->id, count, job->count, g_list_client.count, job->speed, job->maxspeed, 0.1*(s2-s1));
 
 //	for(int i=0; i<templ->auxs_size; i++)

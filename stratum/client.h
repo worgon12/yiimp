@@ -58,6 +58,7 @@ public:
 	const char *id_str;
 
 	char version[1024];
+	char versionmask[1024];
 	char username[1024];
 	char password[1024];
 	char worker[1024];

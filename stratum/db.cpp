@@ -207,13 +207,18 @@ void db_update_coinds(YAAMP_DB *db)
 		YAAMP_COIND *coind = (YAAMP_COIND *)object_find(&g_list_coind, atoi(row[0]));
 		if(!coind)
 		{
-			coind = new YAAMP_COIND;
-			memset(coind, 0, sizeof(YAAMP_COIND));
+	 		if (!strlen(g_stratum_coin_include) || (strlen(g_stratum_coin_include) && strstr(g_stratum_coin_include, row[20])))
+			{
+				coind = new YAAMP_COIND;
+				memset(coind, 0, sizeof(YAAMP_COIND));
 
-			coind->newcoind = true;
-			coind->newblock = true;
-			coind->id = atoi(row[0]);
-			coind->aux.coind = coind;
+				coind->newcoind = true;
+				coind->newblock = true;
+				coind->id = atoi(row[0]);
+				coind->aux.coind = coind;
+			}
+			else
+		 		continue;
 		}
 		else
 			coind->newcoind = false;
