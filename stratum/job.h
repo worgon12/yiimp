@@ -5,15 +5,14 @@ class YAAMP_REMOTE;
 class YAAMP_COIND;
 class YAAMP_COIND_AUX;
 
-#define RES_HEADER_SIZE (4+32+32+32+4+4+32 + 1344 + 3)
 struct YAAMP_JOB_VALUES
 {
 	char coinbase[4*1024];
 	char merkleroot_be[1024];
 
-	char header[RES_HEADER_SIZE * 2 +1];
-	char header_be[RES_HEADER_SIZE * 2 +1];		// +1 bcz of `/0`
-	unsigned char header_bin[RES_HEADER_SIZE];	// +1 bcz of `/0`
+	char header[1024];
+	char header_be[1024];
+	unsigned char header_bin[1024];
 
 	char hash_hex[1024];
 	char hash_be[1024];
@@ -30,8 +29,6 @@ struct YAAMP_JOB_TEMPLATE
 
 	char extradata_hex[512];
 	char extradata_be[512];
-	
-	char mr_hex[512];
 
 	// todo: can use extra field
 	char claim_hex[128];
@@ -44,7 +41,6 @@ struct YAAMP_JOB_TEMPLATE
 	vector<string> txdata;
 
 	char version[32];
-	char versionmask[32];
 	char nbits[32];
 	char ntime[32];
 
@@ -55,7 +51,9 @@ struct YAAMP_JOB_TEMPLATE
 
 	char coinb1[4*1024];
 	char coinb2[4*1024];
-	char coinbase[16*1024];
+	char coinforsubmitb1[4*1024];
+	char coinforsubmitb2[4*1024];
+	bool isbitcash;
 
 	char header[256];
 
@@ -64,11 +62,11 @@ struct YAAMP_JOB_TEMPLATE
 	bool has_filtered_txs;
 	int filtered_txs_fee;
 
-
 	int auxs_size;
 	YAAMP_COIND_AUX *auxs[MAX_AUXS];
 	
-	vector<string> BackWhither;
+	bool needpriceinfo;
+	char priceinfo[1024];	
 };
 
 #define YAAMP_JOB_MAXSUBIDS		200
@@ -88,7 +86,7 @@ public:
 	YAAMP_COIND *coind;			// either one of them
 	YAAMP_REMOTE *remote;
 	YAAMP_JOB_TEMPLATE *templ;
-	
+
 	bool remote_subids[YAAMP_JOB_MAXSUBIDS];
 };
 
