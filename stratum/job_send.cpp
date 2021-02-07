@@ -29,34 +29,9 @@ static void job_mining_notify_buffer(YAAMP_JOB *job, char *buffer)
 			job->id, templ->prevhash_be, templ->extradata_be, templ->coinb1, templ->coinb2,
 			templ->txmerkles, templ->version, templ->nbits, templ->ntime);
 		return;
-	} 
-	
-    // yespowerRES job
+	}
 
-    if (!strcmp(g_stratum_algo, "yespowerRES")) {
-        char rev_version[32] = {0};
-        char prevHashReversed[65] = {0};
-        char merkleRootReversed[65] = {0};
-        char rev_ntime[32] = {0};
-        char rev_nbits[32] = {0};
-
-
-        //string_be(templ->version,rev_version);
-        //string_be(templ->prevhash_hex,prevHashReversed);
-        //string_be(templ->mr_hex,merkleRootReversed);
-
-        //memset(merkleRootReversed, 0x30, 64); merkleRootReversed[65] = 0;
-
-        string_be(templ->ntime,rev_ntime);
-        string_be(templ->nbits,rev_nbits);
-        // jobId, version, prevHashReversed, merkleRootReversed, hashReserved (finalsaplingroothash), curtime, nbits
-        sprintf(buffer, "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"%x\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",true]}\n",
-		job->id,  templ->prevhash_hex, templ->coinb1, templ->coinb2, templ->mr_hex, templ->txmerkles, templ->version, rev_nbits, rev_ntime, templ->extradata_be);
-        return;
-    }
-	
 	// standard stratum
-	// https://en.bitcoin.it/wiki/Stratum_mining_protocol#mining.notify
 	sprintf(buffer, "{\"id\":null,\"method\":\"mining.notify\",\"params\":[\"%x\",\"%s\",\"%s\",\"%s\",[%s],\"%s\",\"%s\",\"%s\",true]}\n",
 		job->id, templ->prevhash_be, templ->coinb1, templ->coinb2, templ->txmerkles, templ->version, templ->nbits, templ->ntime);
 }
@@ -183,7 +158,7 @@ void job_broadcast(YAAMP_JOB *job)
 	if (templ->nbits && !coin_target) coin_target = 0xFFFF000000000000ULL; // under decode_compact min diff
 	double coin_diff = target_to_diff(coin_target);
 
-	debuglog("%s %d - diff %.9f job %x to %d/%d/%d clients, hash %.6f/%.6f in %.1f ms\n", job->name,
+	debuglog("%s %d - diff %.9f job %x to %d/%d/%d clients, hash %.3f/%.3f in %.1f ms\n", job->name,
 		templ->height, coin_diff, job->id, count, job->count, g_list_client.count, job->speed, job->maxspeed, 0.1*(s2-s1));
 
 //	for(int i=0; i<templ->auxs_size; i++)
