@@ -614,10 +614,7 @@ void *client_thread(void *p)
 			b = client_send_result(client, "\"pong\"");
 
 		else if(!strcmp(method, "mining.submit")) {
-            if (g_current_algo->name && !strcmp(g_current_algo->name,"yespowerRES")) {
-                b = client_submit_res(client, json_params);
-            } else
-                b = client_submit(client, json_params);
+            b = client_submit(client, json_params);
         }
 		
 		else if(!strcmp(method, "mining.suggest_difficulty"))
