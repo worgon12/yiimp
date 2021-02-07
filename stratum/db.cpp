@@ -207,18 +207,13 @@ void db_update_coinds(YAAMP_DB *db)
 		YAAMP_COIND *coind = (YAAMP_COIND *)object_find(&g_list_coind, atoi(row[0]));
 		if(!coind)
 		{
-	 		if (!strlen(g_stratum_coin_include) || (strlen(g_stratum_coin_include) && strstr(g_stratum_coin_include, row[20])))
-			{
-				coind = new YAAMP_COIND;
-				memset(coind, 0, sizeof(YAAMP_COIND));
+			coind = new YAAMP_COIND;
+			memset(coind, 0, sizeof(YAAMP_COIND));
 
-				coind->newcoind = true;
-				coind->newblock = true;
-				coind->id = atoi(row[0]);
-				coind->aux.coind = coind;
-			}
-			else
-		 		continue;
+			coind->newcoind = true;
+			coind->newblock = true;
+			coind->id = atoi(row[0]);
+			coind->aux.coind = coind;
 		}
 		else
 			coind->newcoind = false;
@@ -327,6 +322,7 @@ void db_update_coinds(YAAMP_DB *db)
 			if (strcmp(coind->symbol, "FLAX") == 0) coind->oldmasternodes = true;
 			if (strcmp(coind->symbol, "ITZ") == 0) coind->oldmasternodes = true;
 			if (strcmp(coind->symbol, "J") == 0 || strcmp(coind->symbol2, "J") == 0) coind->oldmasternodes = true;
+			if (strcmp(coind->symbol, "LAX") == 0) coind->oldmasternodes = true;
 			if (strcmp(coind->symbol, "MAG") == 0) coind->oldmasternodes = true;
 			if (strcmp(coind->symbol, "PBS") == 0) coind->oldmasternodes = true;
 			if (strcmp(coind->symbol, "URALS") == 0) coind->oldmasternodes = true;
