@@ -19,9 +19,7 @@ void build_submit_values(YAAMP_JOB_VALUES *submitvalues, YAAMP_JOB_TEMPLATE *tem
 	char doublehash[128];
 	memset(doublehash, 0, 128);
 
-	char veildatahash[1024];
-	memset(veildatahash, 0, 1024);
-
+	// some (old) wallet/algos need a simple SHA256 (blakecoin, whirlcoin, groestlcoin...)
 	YAAMP_HASH_FUNCTION merkle_hash = sha256_double_hash_hex;
 	if (g_current_algo->merkle_func)
 		merkle_hash = g_current_algo->merkle_func;
@@ -33,21 +31,19 @@ void build_submit_values(YAAMP_JOB_VALUES *submitvalues, YAAMP_JOB_TEMPLATE *tem
 #ifdef MERKLE_DEBUGLOG
 	printf("merkle root %s\n", merkleroot.c_str());
 #endif
-	
-	
-	if (!strcmp(g_current_algo->name, "lbry")) 
-	{
+	if (!strcmp(g_stratum_algo, "lbry")) {
 		sprintf(submitvalues->header, "%s%s%s%s%s%s%s", templ->version, templ->prevhash_be, submitvalues->merkleroot_be,
 			templ->claim_be, ntime, templ->nbits, nonce);
-		ser_string_be(submitvalues->header, submitvalues->header_be, 32 + 20);
-	} 
-	else 
-	{
+		ser_string_be(submitvalues->header, submitvalues->header_be, 112/4);
+	} else if (strlen(templ->extradata_be) == 128) { // LUX SC
+		sprintf(submitvalues->header, "%s%s%s%s%s%s%s", templ->version, templ->prevhash_be, submitvalues->merkleroot_be,
+			ntime, templ->nbits, nonce, templ->extradata_be);
+		ser_string_be(submitvalues->header, submitvalues->header_be, 36); // 80+64 / sizeof(u32)
+	} else {
 		sprintf(submitvalues->header, "%s%s%s%s%s%s", templ->version, templ->prevhash_be, submitvalues->merkleroot_be,
 			ntime, templ->nbits, nonce);
 		ser_string_be(submitvalues->header, submitvalues->header_be, 20);
 	}
-
 
 	binlify(submitvalues->header_bin, submitvalues->header_be);
 
@@ -152,11 +148,6 @@ static void client_do_submit(YAAMP_CLIENT *client, YAAMP_JOB *job, YAAMP_JOB_VAL
 	uint64_t hash_int = get_hash_difficulty(submitvalues->hash_bin);
 	uint64_t coin_target = decode_compact(templ->nbits);
 	if (templ->nbits && !coin_target) coin_target = 0xFFFF000000000000ULL;
-
-        // please forgive me for this hack jebus
-        if (strstr(g_current_algo->name,"balloon") &&
-           (submitvalues->hash_bin[30] | submitvalues->hash_bin[31]))
-           coin_target = 0x0;
 
 	int block_size = YAAMP_SMALLBUFSIZE;
 	vector<string>::const_iterator i;
@@ -284,7 +275,7 @@ static void client_do_submit(YAAMP_CLIENT *client, YAAMP_JOB *job, YAAMP_JOB_VAL
 
 			merkle_hash((char *)submitvalues->header_bin, doublehash2, strlen(submitvalues->header_be)/2);
 
-                        char hash1[1024];
+			char hash1[1024];
 			memset(hash1, 0, 1024);
 
 			string_be(doublehash2, hash1);
@@ -332,6 +323,7 @@ bool dump_submit_debug(const char *title, YAAMP_CLIENT *client, YAAMP_JOB *job, 
 	debuglog("ERROR %s, %s subs %d, job %x, %s, id %x, %d, %s, %s %s\n",
 		title, client->sock->ip, client->extranonce_subscribe, job? job->id: 0, client->extranonce1,
 		client->extranonce1_id, client->extranonce2size, extranonce2, ntime, nonce);
+	return true;
 }
 
 void client_submit_error(YAAMP_CLIENT *client, YAAMP_JOB *job, int id, const char *message, char *extranonce2, char *ntime, char *nonce)
@@ -354,27 +346,43 @@ void client_submit_error(YAAMP_CLIENT *client, YAAMP_JOB *job, int id, const cha
 	object_unlock(job);
 }
 
+static bool ntime_valid_range(const char ntimehex[])
+{
+	time_t rawtime = 0;
+	uint32_t ntime = 0;
+	if (strlen(ntimehex) != 8) return false;
+	sscanf(ntimehex, "%8x", &ntime);
+	if (ntime < 0x5b000000 || ntime > 0x60000000) // 14 Jan 2021
+		return false;
+	time(&rawtime);
+	return (abs(rawtime - ntime) < (30 * 60));
+}
+
+static bool valid_string_params(json_value *json_params)
+{
+	for(int p=0; p < json_params->u.array.length; p++) {
+		if (!json_is_string(json_params->u.array.values[p]))
+			return false;
+	}
+	return true;
+}
+
 bool client_submit(YAAMP_CLIENT *client, json_value *json_params)
 {
-  	// submit(worker_name, jobid, extranonce2, ntime, nonce):
-	if(json_params->u.array.length<5)
-	{
+	// submit(worker_name, jobid, extranonce2, ntime, nonce):
+	if(json_params->u.array.length<5 || !valid_string_params(json_params)) {
 		debuglog("%s - %s bad message\n", client->username, client->sock->ip);
 		client->submit_bad++;
 		return false;
 	}
 
-	char extranonce2[32];
-	char ntime[32];
-	char nonce[32];
-	char vote[8];
+	char extranonce2[32] = { 0 };
+	char extra[160] = { 0 };
+	char nonce[80] = { 0 };
+	char ntime[32] = { 0 };
+	char vote[8] = { 0 };
 
-	memset(extranonce2, 0, 32);
-	memset(ntime, 0, 32);
-	memset(nonce, 0, 32);
-	memset(vote, 0, 8);
-
-	if (!json_params->u.array.values[1]->u.string.ptr || strlen(json_params->u.array.values[1]->u.string.ptr) > 32) {
+	if (strlen(json_params->u.array.values[1]->u.string.ptr) > 32) {
 		clientlog(client, "bad json, wrong jobid len");
 		client->submit_bad++;
 		return false;
@@ -384,17 +392,27 @@ bool client_submit(YAAMP_CLIENT *client, json_value *json_params)
 	strncpy(extranonce2, json_params->u.array.values[2]->u.string.ptr, 31);
 	strncpy(ntime, json_params->u.array.values[3]->u.string.ptr, 31);
 	strncpy(nonce, json_params->u.array.values[4]->u.string.ptr, 31);
-	if (json_params->u.array.length == 6)
-		strncpy(vote, json_params->u.array.values[5]->u.string.ptr, 7);
-
-	if (g_debuglog_hash) {
-		debuglog("submit %s (uid %d) %d, %s, %s, %s\n", client->sock->ip, client->userid, jobid, extranonce2, ntime, nonce);
-	}
 
 	string_lower(extranonce2);
 	string_lower(ntime);
 	string_lower(nonce);
-	string_lower(vote);
+
+	if (json_params->u.array.length == 6) {
+		if (strstr(g_stratum_algo, "phi")) {
+			// lux optional field, smart contral root hashes (not mandatory on shares submit)
+			strncpy(extra, json_params->u.array.values[5]->u.string.ptr, 128);
+			string_lower(extra);
+		} else {
+			// heavycoin vote
+			strncpy(vote, json_params->u.array.values[5]->u.string.ptr, 7);
+			string_lower(vote);
+		}
+	}
+
+	if (g_debuglog_hash) {
+		debuglog("submit %s (uid %d) %d, %s, t=%s, n=%s, extra=%s\n", client->sock->ip, client->userid,
+			jobid, extranonce2, ntime, nonce, extra);
+	}
 
 	YAAMP_JOB *job = (YAAMP_JOB *)object_find(&g_list_job, jobid, true);
 	if(!job)
@@ -422,8 +440,8 @@ bool client_submit(YAAMP_CLIENT *client, json_value *json_params)
 
 	if(strcmp(ntime, templ->ntime))
 	{
-		if (!ishexa(ntime, 8)) {
-			client_submit_error(client, job, 23, "Invalid ntime", extranonce2, ntime, nonce);
+		if (!ishexa(ntime, 8) || !ntime_valid_range(ntime)) {
+			client_submit_error(client, job, 23, "Invalid time rolling", extranonce2, ntime, nonce);
 			return true;
 		}
 		// dont allow algos permutations change over time (can lead to different speeds)
@@ -498,8 +516,8 @@ bool client_submit(YAAMP_CLIENT *client, json_value *json_params)
 		debuglog("shar %016lx \n", user_target);
 		debuglog("coin %016lx \n", coin_target);
 	}
-
-    if(hash_int > user_target)
+	
+	if(hash_int > user_target)
 	{
 		client_submit_error(client, job, 26, "Low difficulty share", extranonce2, ntime, nonce);
 		return true;
@@ -536,15 +554,3 @@ bool client_submit(YAAMP_CLIENT *client, json_value *json_params)
 
 	return true;
 }
-
-// -------------------------------------------------------------
-
-static bool valid_string_params(json_value *json_params)
-{
-	for(int p=0; p < json_params->u.array.length; p++) {
-		if (!json_is_string(json_params->u.array.values[p]))
-			return false;
-	}
-	return true;
-}
-
