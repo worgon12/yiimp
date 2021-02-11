@@ -17,7 +17,7 @@ SOURCES=lyra2re.c lyra2v2.c Lyra2.c lyra2z.c lyra2z330.c Lyra2-z.c Sponge.c alli
 	scrypt.c scryptn.c sha256.c sha256t.c sha256csm.c \
 	x16rt.c sha256-d.c minotaur.c curvehash.c megabtx.c megamec.c \
 	yescrypt.c yescrypt-opt.c sha256_Y.c \
-	yespower/yespower-platform.c yespower/yespower-combined.c sha256-P.c \
+	yespower/yespower-platform.c yespower/yespower-combined.c sha256-P.c yespower/yespower-blake2b.c yespower/crypto/blake2b-yp.c \
 	a5a.c a5amath.c m7m.c magimath.cpp velvet.c \
 	argon2a.c blake2/blake2b.c blake2-ref/blake2b.c blake2-ref/blake2s.c ar2/argon2.c ar2/core.c ar2/encoding.c ar2/opt.c ar2/thread.c ar2/ar2-scrypt-jane.c \
 	hive.c pomelo.c hex.c argon2d.c geek.c bcd.c \

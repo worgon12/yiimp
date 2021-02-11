@@ -48,6 +48,7 @@ function yaamp_get_algos()
 		'nist5',
 		'penta',
 		'polytimos',
+		'power2b',
 		'quark',
 		'qubit',
 		'rainforest',
@@ -136,6 +137,8 @@ function yaamp_algo_mBTC_factor($algo)
 	case 'keccak':
 	case 'keccakc':
 	case 'lbry':
+	case 'power2b':
+		return 0.001;
 	case 'vanilla':
 		return 1000;
 	default:
@@ -175,6 +178,7 @@ function yaamp_get_algo_norm($algo)
 		'skein2'	=> 1.0,
 		'velvet'	=> 1.0,
 		'whirlpool'	=> 1.0,
+		'power2b'	=> 0.001,
 		'yescrypt'	=> 1.0,
 		'yescryptR8'	=> 1.0,
 		'yescryptR16'	=> 1.0,
@@ -267,6 +271,7 @@ function getAlgoColors($algo)
 		'phi5'		=> '#aba0e0',
 		'pipe'		=> '#a0a0e0',
 		'polytimos'	=> '#dedefe',
+		'power2b'	=> '#e2d0d2',
 		'sib'		=> '#a0a0c0',
 		'skein'		=> '#80a0a0',
 		'skein2'	=> '#c8a060',
@@ -416,6 +421,7 @@ function getAlgoPort($algo)
 		'yespowerLTNCG'	=> 6241,
 		'yespowerLITB'	=> 6242,
 		'yespowerTIDE'	=> 6243,
+		'power2b'	=> 7445,
 		'bastion'	=> 6433,
 		'hsr'		=> 7433,
 		'phi'		=> 8333,
