@@ -111,6 +111,12 @@ function BackendCoinPayments($coin)
 			debuglog("payment: more than 990 {$coin->symbol} users to pay, limit to top balances...");
 			break;
 		}
+		// MicroBitcoin doesn't like 8 decimals
+		if($coin->symbol == 'MBC') 
+		{
+			$total_to_pay += round($user->balance, 2);
+			$addresses[$user->username] = round($user->balance, 2);
+		}
 	}
 
 	if(!$total_to_pay)
