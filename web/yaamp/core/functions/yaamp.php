@@ -74,6 +74,7 @@ function yaamp_get_algos()
 		'x25x',
 		'xevan',
 		'geek',
+		'gr',
 		'groestl', // dmd-gr -m 256 (deprecated)
 		'dmd-gr',
 		'myr-gr',
@@ -139,6 +140,8 @@ function yaamp_algo_mBTC_factor($algo)
 	case 'lbry':
 	case 'power2b':
 		return 0.001;
+	case 'gr':
+		return 0.001;
 	case 'vanilla':
 		return 1000;
 	default:
@@ -167,6 +170,7 @@ function yaamp_get_algo_norm($algo)
 		'lyra2'		=> 1.0,
 		'lyra2v2'	=> 1.0,
 		'lyra2v3'	=> 1.0,
+		'gr'		=> 0.001,
 		'myr-gr'	=> 1.0,
 		'nist5'		=> 1.0,
 		'neoscrypt'	=> 1.0,
@@ -237,6 +241,7 @@ function getAlgoColors($algo)
 		'bmw512'	=> '#f0f0f0',
 		'curvehash'	=> '#d0a0a0',
 		'geek'		=> '#d0a0a0',
+		'gr'		=> '#80a0d0',
 		'groestl'	=> '#d0a0a0',
 		'jha'		=> '#a0d0c0',
 		'dmd-gr'	=> '#a0c0f0',
@@ -360,6 +365,7 @@ function getAlgoPort($algo)
 		'nist5'		=> 3833,
 		'x14'		=> 3933,
 		'geek'		=> 3692,
+		'gr'		=> 7070,
 		'quark'		=> 4033,
 		'whirlpool'	=> 4133,
 		'neoscrypt'	=> 4233,
