@@ -113,6 +113,7 @@ function yaamp_get_algos()
 		'yespowerSUGAR',
 		'yespowerTIDE',
 		'yespowerURX',
+		'yespowerMGPC',
 		'whirlpool',
 		'zr5',
 		
@@ -306,6 +307,7 @@ function getAlgoColors($algo)
 		'yespowerSUGAR' 	=> '#e2d0d2',
 		'yespowerTIDE' 	=> '#e2d0d2',
 		'yespowerURX' 	=> '#e2d0d2',
+		'yespowerMGPC' 	=> '#e2d0d2',
 		'cpupower' 	=> '#e2d0d2',
 		'zr5'		=> '#d0b0d0',
 		'lbk3'		=> '#809aef',
@@ -430,6 +432,7 @@ function getAlgoPort($algo)
 		'yespowerLTNCG'	=> 6241,
 		'yespowerLITB'	=> 6242,
 		'yespowerTIDE'	=> 6243,
+		'yespowerMGPC'	=> 6244,
 		'power2b'	=> 7445,
 		'bastion'	=> 6433,
 		'hsr'		=> 7433,
