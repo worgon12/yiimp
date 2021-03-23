@@ -246,3 +246,4 @@ void sha256_double_hash_hex(const char *input, char *output, unsigned int len);
 #include "algos/phi5.h"
 #include "algos/lyra2z330.h"
 #include "algos/gr.h"
+#include "algos/heavyhash/heavyhash.h"
