@@ -5,10 +5,12 @@ function yaamp_get_algos()
 	/* Toggle Site Algos Here */
 	return array(
 		'sha256',
+		'sha256csm',
 		'sha256t',
 		'scrypt',
 		'scryptn',
 		'allium',
+		'anime',
 		'argon2',
 		'argon2d250',
 		'argon2d-dyn',
@@ -203,6 +205,7 @@ function getAlgoColors($algo)
 {
 	$a = array(
 		'sha256'	=> '#d0d0a0',
+		'sha256csm'	=> '#d0d0a0',
 		'sha256t'	=> '#d0d0f0',
 		'scrypt'	=> '#c0c0e0',
 		'neoscrypt'	=> '#a0d0f0',
@@ -232,6 +235,7 @@ function getAlgoColors($algo)
 		'x25x'		=> '#f0f0a0',
 		'xevan'         => '#f0b0a0',
 		'allium'	=> '#80a0d0',
+		'anime'		=> '#80a0d0',
 		'argon2'	=> '#e0d0e0',
 		'argon2d250'	=> '#e0d0e0',
 		'argon2d-dyn'	=> '#e0d0e0',
@@ -254,8 +258,8 @@ function getAlgoColors($algo)
 		'hsr'		=> '#aa70ff',
 		'keccak'	=> '#c0f0c0',
 		'keccakc'	=> '#c0f0c0',
-		'hex'		=> '#c0f0c0',
 		'heavyhash'	=> '#c0f0c0',
+		'hex'		=> '#c0f0c0',
 		'honeycomb'		=> '#c0f0c0',
 		'lbry'		=> '#b0d0e0',
 		'luffa'		=> '#a0c0c0',
@@ -336,6 +340,7 @@ function getAlgoPort($algo)
 {
 	$a = array(
 		'sha256'	=> 3333,
+		'sha256csm'	=> 3340,
 		'sha256t'	=> 3339,
 		'lbry'		=> 3334,
 		'scrypt'	=> 3433,
@@ -375,6 +380,7 @@ function getAlgoPort($algo)
 		'quark'		=> 4033,
 		'whirlpool'	=> 4133,
 		'neoscrypt'	=> 4233,
+		'anime'		=> 4230,
 		'argon2'	=> 4234,
 		'argon2d250'	=> 4238,
 		'argon2d-dyn'	=> 4239,
@@ -384,7 +390,7 @@ function getAlgoPort($algo)
 		'allium'	=> 4443,
 		'lbk3'		=> 5522,
 		'lyra2'		=> 4433,
-		'lyra2TDC'		=> 4434,
+		'lyra2TDC'	=> 4434,
 		'lyra2v2'	=> 4533,
 		'lyra2v3'	=> 4550,
 		'lyra2vc0ban'	=> 4563,
@@ -398,8 +404,8 @@ function getAlgoPort($algo)
 		'sonoa'		=> 8733,
 		'keccak'	=> 5133,
 		'keccakc'	=> 5134,
-		'hex'		=> 5135,
 		'heavyhash'	=> 5136,
+		'hex'		=> 5135,
 		'honeycomb'	=> 7777,
 		'skein2'	=> 5233,
 		//'groestl'	=> 5333,
