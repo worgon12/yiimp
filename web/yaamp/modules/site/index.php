@@ -32,13 +32,12 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
 
 <ul>
 
-<li>Welcome to your new mining pool, <?=YAAMP_SITE_NAME?>! </li>
-<li>This installation was completed using the Kudaraidee/yiimp_install_script.</li>
-<li>Any edits to this page should be made to, /var/web/yaamp/site/web/yaamp/modules/site/index.php</li>
-<li>&nbsp;</li>
+<li>Welcome to your new mining pool, <?=YAAMP_SITE_URL?>! </li>
+<li>YiiMP is a pool management solution based on the Yii Framework.</li>
+<li>This fork was based on the yaamp source code and is now an open source project.</li>
 <li>No registration is required, we do payouts in the currency you mine. Use your wallet address as the username.</li>
 <li>&nbsp;</li>
-<li>Payouts are made automatically every <?=$payout_freq ?> for all balances above <b><?=$min_payout ?></b>, or <b><?=$min_sunday ?></b> on Sunday.</li>
+<li>Payouts are made automatically every <?= $payout_freq ?> for all balances above <b><?= $min_payout ?></b>, or <b><?= $min_sunday ?></b> on Sunday.</li>
 <li>For some coins, there is an initial delay before the first payout, please wait at least 6 hours before asking for support.</li>
 <li>Blocks are distributed proportionally among valid submitted shares.</li>
 
