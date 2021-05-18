@@ -33,7 +33,6 @@ void argon2d_crds_call(const void *input, void *output)
     context.lanes = 4;     // Degree of Parallelism
     context.threads = 1;   // Threads
     context.t_cost = 1;    // Iterations
-	context.version = ARGON2_VERSION_10;
 	
 	argon2_ctx(&context, Argon2_d);
 }
@@ -58,7 +57,6 @@ void argon2d_dyn_call(const void *input, void *output)
     context.lanes = 8;     // Degree of Parallelism
     context.threads = 1;   // Threads
     context.t_cost = 2;    // Iterations
-	context.version = ARGON2_VERSION_10;
 	
 	argon2_ctx(&context, Argon2_d);
 }
@@ -83,7 +81,7 @@ void argon2d16000_call(const void *input, void *output)
     context.lanes = 1;    // Degree of Parallelism
     context.threads = 1;   // Threads
     context.t_cost = 1;    // Iterations
-	context.version = ARGON2_VERSION_10;
+	
 	
 	argon2_ctx(&context, Argon2_d);
 }
@@ -103,7 +101,7 @@ void argon2d_uis_hash(const unsigned char* input, unsigned char* output, unsigne
 	uint32_t t_cost = 1; // 1 iteration
 	uint32_t m_cost = 4096; // use 4MB
 	uint32_t parallelism = 1; // 1 thread, 2 lanes
-    argon2d_hash_raw( t_cost, m_cost, parallelism, input, len, input, len, output, OUTPUT_BYTES, ARGON2_VERSION_13 );
+    argon2d_hash_raw( t_cost, m_cost, parallelism, input, len, input, len, output, OUTPUT_BYTES );
 }
 
 void argon2d16000_hash(const unsigned char* input, unsigned char* output, unsigned int len)
