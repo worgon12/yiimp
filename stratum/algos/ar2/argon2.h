@@ -266,8 +266,7 @@ ARGON2_PUBLIC int argon2i_hash_encoded(const uint32_t t_cost,
                                        const void *pwd, const size_t pwdlen,
                                        const void *salt, const size_t saltlen,
                                        const size_t hashlen, char *encoded,
-                                       const size_t encodedlen,
-                                       const uint32_t version );
+                                       const size_t encodedlen );
 
 /**
  * Hashes a password with Argon2i, producing a raw hash at @hash
