@@ -8,8 +8,8 @@
  * License/Waiver or the Apache Public License 2.0, at your option. The terms of
  * these licenses can be found at:
  *
- * - CC0 1.0 Universal : http://creativecommons.org/publicdomain/zero/1.0
- * - Apache 2.0        : http://www.apache.org/licenses/LICENSE-2.0
+ * - CC0 1.0 Universal : https://creativecommons.org/publicdomain/zero/1.0
+ * - Apache 2.0        : https://www.apache.org/licenses/LICENSE-2.0
  *
  * You should have received a copy of both of these licenses along with this
  * software. If not, they may be obtained at the above URLs.
@@ -101,7 +101,8 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
                 const uint32_t parallelism, const void *pwd,
                 const size_t pwdlen, const void *salt, const size_t saltlen,
                 void *hash, const size_t hashlen, char *encoded,
-                const size_t encodedlen, argon2_type type ){
+                const size_t encodedlen, argon2_type type,
+                const uint32_t version){
 
     argon2_context context;
     int result;
@@ -442,11 +443,10 @@ const char *argon2_error_message(int error_code) {
         return "Unknown error code";
     }
 }
-/*
+
 size_t argon2_encodedlen(uint32_t t_cost, uint32_t m_cost, uint32_t parallelism,
                          uint32_t saltlen, uint32_t hashlen, argon2_type type) {
   return strlen("$$v=$m=,t=,p=$$") + strlen(argon2_type2string(type, 0)) +
          numlen(t_cost) + numlen(m_cost) + numlen(parallelism) +
          b64len(saltlen) + b64len(hashlen) + numlen(ARGON2_VERSION_NUMBER) + 1;
 }
-*/
