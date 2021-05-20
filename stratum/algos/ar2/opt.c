@@ -4,12 +4,12 @@
  * Copyright 2015
  * Daniel Dinu, Dmitry Khovratovich, Jean-Philippe Aumasson, and Samuel Neves
  *
- * You may use this work under the terms of a Creative Commons CC0 1.0 
+ * You may use this work under the terms of a Creative Commons CC0 1.0
  * License/Waiver or the Apache Public License 2.0, at your option. The terms of
  * these licenses can be found at:
  *
- * - CC0 1.0 Universal : http://creativecommons.org/publicdomain/zero/1.0
- * - Apache 2.0        : http://www.apache.org/licenses/LICENSE-2.0
+ * - CC0 1.0 Universal : https://creativecommons.org/publicdomain/zero/1.0
+ * - Apache 2.0        : https://www.apache.org/licenses/LICENSE-2.0
  *
  * You should have received a copy of both of these licenses along with this
  * software. If not, they may be obtained at the above URLs.
@@ -191,6 +191,22 @@ void fill_segment(const argon2_instance_t *instance,
         return;
     }
 
+    data_independent_addressing =
+        (instance->type == Argon2_i) ||
+        (instance->type == Argon2_id && (position.pass == 0) &&
+         (position.slice < ARGON2_SYNC_POINTS / 2));
+
+    if (data_independent_addressing) {
+        init_block_value(&input_block, 0);
+
+        input_block.v[0] = position.pass;
+        input_block.v[1] = position.lane;
+        input_block.v[2] = position.slice;
+        input_block.v[3] = instance->memory_blocks;
+        input_block.v[4] = instance->passes;
+        input_block.v[5] = instance->type;
+    }
+
     starting_index = 0;
 
     if ((0 == position.pass) && (0 == position.slice)) {
@@ -253,21 +269,15 @@ void fill_segment(const argon2_instance_t *instance,
         ref_block =
             instance->memory + instance->lane_length * ref_lane + ref_index;
         curr_block = instance->memory + curr_offset;
-         if (ARGON2_VERSION_10 == instance->version) 
-		 {
-             /* version 1.2.1 and earlier: overwrite, not XOR */
-             fill_block(state, ref_block, curr_block, 0);
-         } 
-		 else 
-		 {
-			 if(0 == position.pass) 
-			 {
+        if (ARGON2_VERSION_10 == instance->version) {
+            /* version 1.2.1 and earlier: overwrite, not XOR */
+            fill_block(state, ref_block, curr_block, 0);
+        } else {
+            if(0 == position.pass) {
                 fill_block(state, ref_block, curr_block, 0);
-             } 
-			 else 
-			 {
-                 fill_block(state, ref_block, curr_block, 1);
-             }
-		 }
+            } else {
+                fill_block(state, ref_block, curr_block, 1);
+            }
+        }
     }
 }
