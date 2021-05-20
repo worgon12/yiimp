@@ -101,8 +101,7 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
                 const uint32_t parallelism, const void *pwd,
                 const size_t pwdlen, const void *salt, const size_t saltlen,
                 void *hash, const size_t hashlen, char *encoded,
-                const size_t encodedlen, argon2_type type,
-                const uint32_t version){
+                const size_t encodedlen, argon2_type type ){
 
     argon2_context context;
     int result;
