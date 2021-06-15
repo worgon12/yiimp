@@ -117,6 +117,7 @@ function yaamp_get_algos()
 		'yespowerTIDE',
 		'yespowerURX',
 		'yespowerMGPC',
+		'yespowerARWN',
 		'whirlpool',
 		'zr5',
 		
@@ -147,6 +148,8 @@ function yaamp_algo_mBTC_factor($algo)
 		return 0.001;
 	case 'gr':
 		return 0.001;
+	case 'yespowerARWN':
+		return 0.001;
 	case 'vanilla':
 		return 1000;
 	default:
@@ -176,6 +179,7 @@ function yaamp_get_algo_norm($algo)
 		'lyra2v2'	=> 1.0,
 		'lyra2v3'	=> 1.0,
 		'gr'		=> 0.001,
+		'yespowerARWN'		=> 0.001,
 		'myr-gr'	=> 1.0,
 		'nist5'		=> 1.0,
 		'neoscrypt'	=> 1.0,
@@ -314,6 +318,7 @@ function getAlgoColors($algo)
 		'yespowerTIDE' 	=> '#e2d0d2',
 		'yespowerURX' 	=> '#e2d0d2',
 		'yespowerMGPC' 	=> '#e2d0d2',
+		'yespowerARWN' 	=> '#e2d0d2',
 		'cpupower' 	=> '#e2d0d2',
 		'zr5'		=> '#d0b0d0',
 		'lbk3'		=> '#809aef',
@@ -442,6 +447,7 @@ function getAlgoPort($algo)
 		'yespowerLITB'	=> 6242,
 		'yespowerTIDE'	=> 6243,
 		'yespowerMGPC'	=> 6244,
+		'yespowerARWN'	=> 6245,
 		'power2b'	=> 7445,
 		'bastion'	=> 6433,
 		'hsr'		=> 7433,
