@@ -347,26 +347,6 @@ function updateRawCoinExchange($marketname)
 				}
 			}
 		break;
-		case 'c-cex':
-			if (!exchange_get('c-cex', 'disabled')) {
-				$ccex = new CcexAPI;
-				$list = $ccex->getPairs();
-				if($list)
-				{
-					sleep(1);
-					$names = $ccex->getCoinNames();
-
-					dborun("UPDATE markets SET deleted=true WHERE name='c-cex'");
-					foreach($list as $item)
-					{
-						$e = explode('-', $item);
-						$symbol = strtoupper($e[0]);
-
-						updateRawCoin('c-cex', $symbol, arraySafeVal($names, $e[0], 'unknown'));
-					}
-				}
-			}
-		break;
 		case 'yobit':
 			if (!exchange_get('yobit', 'disabled')) {
 				$res = yobit_api_query('info');
