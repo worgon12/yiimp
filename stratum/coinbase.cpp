@@ -934,8 +934,8 @@ void coinbase_create(YAAMP_COIND *coind, YAAMP_JOB_TEMPLATE *templ, json_value *
 	return;
 	}
 
-		//  add CRDS
-	if (strcmp(coind->symbol, "CRDS") == 0)
+		//  BCRS Reband to ADOT
+	if (strcmp(coind->symbol, "ADOT") == 0)
 {
 	char payees[4];
 	int npayees = 1;
