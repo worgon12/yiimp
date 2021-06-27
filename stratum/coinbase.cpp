@@ -935,17 +935,18 @@ void coinbase_create(YAAMP_COIND *coind, YAAMP_JOB_TEMPLATE *templ, json_value *
 	}
 
 		//  BCRS Reband to ADOT
-	if (strcmp(coind->symbol, "ADOT") == 0)
-{
-	char payees[4];
-	int npayees = 1;
-	char script_dests[4096] = { 0 };
-	char script_payee[128] = { 0 };
-			
- 	json_value* masternode = json_get_object(json_result, "masternode");
-	bool masternode_started = json_get_bool(json_result, "masternode_payments_started");
-	if (masternode_started && masternode)
+	else if(strcmp(coind->symbol, "ADOT") == 0 )
 	{
+		char payees[4];
+		int npayees = 1;
+		char script_dests[4096] = { 0 };
+		char script_payee[128] = { 0 };
+		char founder_script_payee[128] = { 0 };
+					
+ 		json_value* masternode = json_get_object(json_result, "masternode");
+		bool masternode_started = json_get_bool(json_result, "masternode_payments_started");
+		if (masternode_started && masternode)
+		{
 			if (json_is_array(masternode)) 
 			{
 				for(int i = 0; i < masternode->u.array.length; i++) 
@@ -984,69 +985,37 @@ void coinbase_create(YAAMP_COIND *coind, YAAMP_JOB_TEMPLATE *templ, json_value *
 			}
 		}
 	
-	json_value* fundreward = json_get_array(json_result, "fundreward");
-	if (fundreward)
-	{
-		const char *fund_payee = json_get_string(fundreward, "payee");
-		json_int_t fund_amount = json_get_int(fundreward, "amount");
-		if (fund_payee && fund_amount)
+		json_value* fundreward = json_get_array(json_result, "fundreward");
+		if (fundreward)
 		{
-			if (json_is_array(fundreward)) 
+			const char *founder_payee = json_get_string(fundreward, "payee");
+			json_int_t founder_amount = json_get_int(fundreward, "amount");
+			if (founder_payee && founder_amount)
 			{
-				for(int i = 0; i < fundreward->u.array.length; i++) 
-				{
-					const char *fund_payee = json_get_string(fundreward->u.array.values[i], "payee");
-					const char *script = json_get_string(fundreward->u.array.values[i], "script");
-					json_int_t fund_amount = json_get_int(fundreward->u.array.values[i], "amount");
-					if (!fund_amount) continue;
-					if (script) 
-					{
-						npayees++;
-						available -= fund_amount;
-						script_pack_tx(coind, script_dests, fund_amount, script);
-					} 
-					else if (fund_payee) 
-					{
-						npayees++;
-						available -= fund_amount;
-						base58_decode(fund_payee, script_payee);
-						job_pack_tx(coind, script_dests, fund_amount, script_payee);
-					}
-				}
-			} 
-			else 
-			{
-				const char *fund_payee = json_get_string(fundreward, "payee");
-				json_int_t fund_amount = json_get_int(fundreward, "amount");
-				if (fund_payee && fund_amount) 
-				{
-					npayees++;
-					available -= fund_amount;
-					base58_decode(fund_payee, script_payee);
-					job_pack_tx(coind, script_dests, fund_amount, script_payee);
-				}
+				npayees++;
+				available -= founder_amount;
+				base58_decode(founder_payee, founder_script_payee);
+				job_pack_tx(coind, script_dests, founder_amount, founder_script_payee);
 			}
 		}
-	}
 	
- 	sprintf(payees, "%02x", npayees);
-	strcat(templ->coinb2, payees);
-	strcat(templ->coinb2, script_dests);
-	job_pack_tx(coind, templ->coinb2, available, NULL);
-	strcat(templ->coinb2, "00000000"); // locktime
-	
-	if(coinbase_payload && strlen(coinbase_payload) > 0)
-	{
-		char coinbase_payload_size[18];
-		ser_compactsize((unsigned int)(strlen(coinbase_payload) >> 1), coinbase_payload_size);
-		strcat(templ->coinb2, coinbase_payload_size);
-		strcat(templ->coinb2, coinbase_payload);
-	}
-	
-	coind->reward = (double)available / 100000000 * coind->reward_mul;
-	return;
-}
+	 	sprintf(payees, "%02x", npayees);
+		strcat(templ->coinb2, payees);
+		strcat(templ->coinb2, script_dests);
+		job_pack_tx(coind, templ->coinb2, available, NULL);
+		strcat(templ->coinb2, "00000000"); // locktime
+		if(coinbase_payload && strlen(coinbase_payload) > 0) 
+		{
+			char coinbase_payload_size[18];
+			ser_compactsize((unsigned int)(strlen(coinbase_payload) >> 1), coinbase_payload_size);
+			strcat(templ->coinb2, coinbase_payload_size);
+			strcat(templ->coinb2, coinbase_payload);
+		}
 
+		coind->reward = (double)available / 100000000 * coind->reward_mul;
+		return;
+	}
+	
 	//  add BMN
 	if (strcmp(coind->symbol, "BMN") == 0)
 {
