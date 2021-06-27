@@ -975,16 +975,9 @@ void coinbase_create(YAAMP_COIND *coind, YAAMP_JOB_TEMPLATE *templ, json_value *
 	strcat(templ->coinb2, script_dests);
 	job_pack_tx(coind, templ->coinb2, available, NULL);
 	strcat(templ->coinb2, "00000000"); // locktime
-	if(coinbase_payload && strlen(coinbase_payload) > 0)
-	{
-		char coinbase_payload_size[18];
-		ser_compactsize((unsigned int)(strlen(coinbase_payload) >> 1), coinbase_payload_size);
-		strcat(templ->coinb2, coinbase_payload_size);
-		strcat(templ->coinb2, coinbase_payload);
-	}
 	coind->reward = (double)available / 100000000 * coind->reward_mul;
 	return;
-}
+	}
 
 	//  add BMN
 	if (strcmp(coind->symbol, "BMN") == 0)
