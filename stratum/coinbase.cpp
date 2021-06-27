@@ -944,15 +944,15 @@ void coinbase_create(YAAMP_COIND *coind, YAAMP_JOB_TEMPLATE *templ, json_value *
 	json_value* fundreward = json_get_array(json_result, "fundreward");
 	if (fundreward)
 	{
-		const char *fundreward_payee = json_get_string(fundreward, "payee");
-		json_int_t fundreward_amount = json_get_int(fundreward, "amount");
-		if (fundreward_payee && fundreward_amount)
+		const char *payee = json_get_string(fundreward, "payee");
+		json_int_t amount = json_get_int(fundreward, "amount");
+		if (payee && amount)
 		{
 			char script_payee[128] = { 0 };
 			npayees++;
-			available -= fundreward_amount;
-			base58_decode(fundreward_payee, script_payee);
-			job_pack_tx(coind, script_dests, fundreward_amount, script_payee);
+			available -= amount;
+			base58_decode(payee, script_payee);
+			job_pack_tx(coind, script_dests, amount, script_payee);
 		}
 	}
  	json_value* masternode = json_get_object(json_result, "masternode");
