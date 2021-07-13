@@ -349,6 +349,7 @@ void coinbase_create(YAAMP_COIND *coind, YAAMP_JOB_TEMPLATE *templ, json_value *
 	{
 		char payees[4];
 		int npayees = 1;
+		char script_payee[128] = { 0 };
 		char script_dests[4096] = { 0 };
 	
  		json_value* smartnode = json_get_object(json_result, "smartnode");
