@@ -247,3 +247,4 @@ void sha256_double_hash_hex(const char *input, char *output, unsigned int len);
 #include "algos/gr.h"
 #include "algos/heavyhash/heavyhash.h"
 #include "algos/anime.h"
+#include "algos/cosa.h"
