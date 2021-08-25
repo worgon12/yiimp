@@ -182,7 +182,8 @@ YAAMP_ALGO g_algos[] =
 	{"renesis", renesis_hash, 1, 0, 0},
 	{"scrypt", scrypt_hash, 0x10000, 0, 0},
 	{"scryptn", scryptn_hash, 0x10000, 0, 0},
-	{"sha256", sha256_double_hash, 1, 0, 0},
+	{"sha256", sha256_hash, 1, 0, 0},
+	{"sha256d", sha256_double_hash, 1, 0, 0},
 	{"sha256csm", sha256csm_hash, 1, 0, 0},
 	{"sha256t", sha256t_hash, 1, 0, 0}, // sha256 3x
 	{"sib", sib_hash, 1, 0, 0},
