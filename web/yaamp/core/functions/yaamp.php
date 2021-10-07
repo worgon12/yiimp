@@ -87,6 +87,7 @@ function yaamp_get_algos()
 		'megabtx',
 		'megamec',
 		'minotaur',
+		'minotaurx',
 		'phi',
 		'phi2',
 		'phi5',
@@ -273,6 +274,7 @@ function getAlgoColors($algo)
 		'megabtx'	=> '#d0f0a0',
 		'megamec'	=> '#d0f0a0',
 		'minotaur'	=> '#d0f0a0',
+		'minotaurx'	=> '#d0f0a0',
 		'penta'		=> '#80c0c0',
 		'nist5'		=> '#c0e0e0',
 		'quark'		=> '#c0c0c0', 
@@ -463,6 +465,7 @@ function getAlgoPort($algo)
 		'tribus'	=> 8533,
 	    'a5a'   	=> 8633,
 		'minotaur'	=> 7018,
+		'minotaurx'	=> 7019,
 		'megabtx'	=> 7066,
 		'megamec'	=> 7067,
 		
