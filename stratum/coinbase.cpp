@@ -299,17 +299,22 @@ void coinbase_create(YAAMP_COIND *coind, YAAMP_JOB_TEMPLATE *templ, json_value *
 		char script_dests[4096] = { 0 };
 	
  		json_value* smartnode = json_get_object(json_result, "smartnode");
+		debuglog("RTM DETECTED Json: RESULT %s\n", smartnode);
 		bool smartnode_started = json_get_bool(json_result, "smartnode_payments_started");
 		if (smartnode_started && smartnode)
 		{
-			const char *payee = json_get_string(smartnode, "payee");
-			json_int_t amount = json_get_int(smartnode, "amount");
+			for(int i = 0; i < smartnode->u.array.length; i++)
+                        {
+			const char *payee = json_get_string(smartnode->u.array.values[i], "payee");
+			json_int_t amount = json_get_int(smartnode->u.array.values[i], "amount");
 			if (payee && amount) {
 				char script_payee[128] = { 0 };
 				npayees++;
 				available -= amount;
 				base58_decode(payee, script_payee);
 				job_pack_tx(coind, script_dests, amount, script_payee);
+			}
+			debuglog("SMARTNODE DETECTED Payee: %s\n", payee);
 			}
 		}
 	
@@ -327,6 +332,7 @@ void coinbase_create(YAAMP_COIND *coind, YAAMP_JOB_TEMPLATE *templ, json_value *
 				base58_decode(founder_payee, founder_script_payee);
 				job_pack_tx(coind, script_dests, founder_amount, founder_script_payee);
 			}
+			debuglog("FOUNDER DETECTED Payee: %s\n", founder_payee);
 		}
 	
 	 	sprintf(payees, "%02x", npayees);
