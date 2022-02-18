@@ -27,18 +27,17 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
 <!--  -->
 
 <div class="main-left-box">
-<div class="main-left-title">domain</div>
+<div class="main-left-title"><?=YAAMP_SITE_URL?></div>
 <div class="main-left-inner">
 
 <ul>
 
-<li>Welcome to your new mining pool, domain! </li>
-<li>This installation was completed using the Ultimate Crypto-Server Setup Installer.</li>
-<li>Any edits to this page should be made to, /home/crypto-data/yiimp/site/web/yaamp/modules/site/index.php</li>
-<li>&nbsp;</li>
+<li>Welcome to your new mining pool, <?=YAAMP_SITE_URL?>! </li>
+<li>YiiMP is a pool management solution based on the Yii Framework.</li>
+<li>This fork was based on the yaamp source code and is now an open source project.</li>
 <li>No registration is required, we do payouts in the currency you mine. Use your wallet address as the username.</li>
 <li>&nbsp;</li>
-<li>Payouts are made automatically every <?=$payout_freq ?> for all balances above <b><?=$min_payout ?></b>, or <b><?=$min_sunday ?></b> on Sunday.</li>
+<li>Payouts are made automatically every <?= $payout_freq ?> for all balances above <b><?= $min_payout ?></b>, or <b><?= $min_sunday ?></b> on Sunday.</li>
 <li>For some coins, there is an initial delay before the first payout, please wait at least 6 hours before asking for support.</li>
 <li>Blocks are distributed proportionally among valid submitted shares.</li>
 
@@ -51,7 +50,7 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
 <!-- Stratum Auto generation code, will automatically add coins when they are enabled and auto ready -->
 
 <div class="main-left-box">
-<div class="main-left-title">How to mine with domain</div>
+<div class="main-left-title">How to mine with <?=YAAMP_SITE_URL?></div>
 <div class="main-left-inner">
 
 <table>
@@ -59,6 +58,7 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
 		<tr>
 			<th>Stratum Location</th>
 			<th>Coin</th>
+			<th>Solo</th>
 		</tr>
 	</thead>
 
@@ -67,15 +67,15 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
 		<td>
 			<select id="drop-stratum" colspan="2" style="min-width: 140px; border-style:solid; padding: 3px; font-family: monospace; border-radius: 5px;">
 
-<!-- Add your stratum locations here -->
+			<!-- Add your stratum locations here -->
 			<option value="asia.">Asia Stratum</option>
 			<option value="na.">North America Stratum</option>
-		<!--	<option value="cad.">CAD Stratum</option>
+			<!--	<option value="cad.">CAD Stratum</option>
 			<option value="uk.">UK Stratum</option> -->
-		</select>
-	</td>
+			</select>
+		</td>
 
-	<td>
+		<td>
 			<select id="drop-coin" style="border-style:solid; padding: 3px; font-family: monospace; border-radius: 5px;">
         <?php
         $list = getdbolist('db_coins', "enable and visible and auto_ready order by algo asc");
@@ -99,7 +99,7 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
         ':symbol' => $symbol
         ));
 
-        if ($port_count >= 1){$port = $port_db->port;}else{$port = '0.0.0.0';}
+        if ($port_count >= 1){$port = $port_db->port;}else{$port = '0000';}
         if($count == 0){ echo "<option disabled=''>$algo";}elseif($algo != $algoheading){echo "<option disabled=''>$algo</option>";}
         echo "<option data-port='$port' data-algo='-a $algo' data-symbol='$symbol'>$name ($symbol)</option>";
 
@@ -107,6 +107,13 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
         $algoheading=$algo;
         }
         ?>
+			</select>
+		</td>
+		
+		<td>
+			<select id="drop-solo" colspan="2" style="min-width: 140px; border-style:solid; padding: 3px; font-family: monospace; border-radius: 5px;">
+			<option value="">No</option>
+			<option value=",m=solo">Yes</option>
 			</select>
 		</td>
 
@@ -134,7 +141,7 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
 		</td>
 	</tr>
 	<tr>
-			<td colspan="5"><p class="main-left-box" style="padding: 3px; background-color: #ffffee; font-family: monospace;" id="output">-a  -o stratum+tcp://stratum.domain:0000 -u . -p c=</p>
+			<td colspan="5"><p class="main-left-box" style="padding: 3px; background-color: #ffffee; font-family: monospace;" id="output">-a  -o stratum+tcp://YAAMP_STRATUM_URL:0000 -u . -p c=</p>
 		</td>
 	</tr>
 </tbody>
@@ -143,7 +150,7 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
 <ul>
 <li>&lt;WALLET_ADDRESS&gt; must be valid for the currency you mine. <b>DO NOT USE a BTC address here, the auto exchange is disabled on these stratums</b>!</li>
 <!-- <li><b>Our stratums are now NiceHASH compatible and ASICBoost enabled, please message support if you have any issues.</b></li> -->
-<li>See the "domain coins" area on the right for PORT numbers. You may mine any coin regardless if the coin is enabled or not for autoexchange. Payouts will only be made in that coins currency.</li>
+<li>See the "<?=YAAMP_SITE_NAME?> coins" area on the right for PORT numbers. You may mine any coin regardless if the coin is enabled or not for autoexchange. Payouts will only be made in that coins currency.</li>
 <li>Payouts are made automatically every hour for all balances above <b><?=$min_payout?></b>, or <b><?=$min_sunday?></b> on Sunday.</li>
 <br>
 </ul>
@@ -152,7 +159,7 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600) . " hours";
 <!-- End new stratum generation code  -->
 
 <div class="main-left-box">
-<div class="main-left-title">domain Links</div>
+<div class="main-left-title"><?=YAAMP_SITE_URL?> Links</div>
 <div class="main-left-inner">
 
 <ul>
@@ -181,7 +188,7 @@ endif;
 </div></div><br>
 
 <div class="main-left-box">
-<div class="main-left-title">domain Support</div>
+<div class="main-left-title"><?=YAAMP_SITE_URL?> Support</div>
 <div class="main-left-inner">
 
 <ul class="social-icons">
@@ -254,18 +261,19 @@ function pool_history_refresh()
 
 <script>
 function getLastUpdated(){
-    var drop1 = document.getElementById('drop-stratum');
-    var drop2 = document.getElementById('drop-coin');
+    var stratum = document.getElementById('drop-stratum');
+    var coin = document.getElementById('drop-coin');
+    var solo = document.getElementById('drop-solo');
     var rigName = document.getElementById('text-rig-name').value;
     var result = '';
 
-    result += drop2.options[drop2.selectedIndex].dataset.algo + ' -o stratum+tcp://';
-    result += drop1.value + 'domain:';
-    result += drop2.options[drop2.selectedIndex].dataset.port + ' -u ';
+    result += coin.options[coin.selectedIndex].dataset.algo + ' -o stratum+tcp://';
+    result += stratum.value + '<?=YAAMP_SITE_URL?>:';
+    result += coin.options[coin.selectedIndex].dataset.port + ' -u ';
     result += document.getElementById('text-wallet').value;
     if (rigName) result += '.' + rigName;
     result += ' -p c=';
-    result += drop2.options[drop2.selectedIndex].dataset.symbol;
+    result += coin.options[coin.selectedIndex].dataset.symbol + solo.value;
     return result;
 }
 function generate(){
