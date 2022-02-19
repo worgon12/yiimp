@@ -175,6 +175,7 @@ YAAMP_ALGO g_algos[] =
 	{"phi2", phi2_hash, 0x100, 0, 0},
 	{"phi5", phi5_hash, 1, 0, 0},
 	{"pipe", pipe_hash, 1,0,0},
+	{"phichox", phichox_hash, 1, 0, 0},
 	{"polytimos", polytimos_hash, 1, 0, 0},
 	{"power2b", power2b_hash, 0x10000, 0, 0 },
 	{"quark", quark_hash, 1, 0, 0},
