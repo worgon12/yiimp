@@ -22,7 +22,7 @@
 
 #include "common.h"
 
-void 0x10_hash(const char* input, char* output, uint32_t len)
+void hash0x10(const char* input, char* output, uint32_t len)
 {
 	
 	unsigned char _ALIGN(64) hash[64];
